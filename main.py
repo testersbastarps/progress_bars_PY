@@ -68,41 +68,23 @@ class pyglet_window(pyglet.window.Window):
         pyglet_window.set_minimum_size(self, 480, 360)
         pyglet_window.set_maximum_size(self, 1280, 720)
         print(pyglet_window.get_location(self))
-        self.label = pyglet.text.Label("Hello World!")
-
-    def on_resize(self, width, height):
-        # print(f"window resized: {width}, {height}")
-        pass
-
-    def on_mouse_press(self, x, y, button, modifiers):
-        # print(f"Mouse pressed: at: {x, y}, button: {button}, modifiers: {modifiers}")
-        pass
-
-    def on_mouse_motion(self, x, y, dx, dy):
-        # print(f"Mouse moved: to: {x, y}, speed: {dx, dy}")
-        pass
-
-    def on_key_press(self, symbol, modifiers):
-        # print(f"Key pressed: {hex(symbol)} ({chr(symbol)}), modifiers: {modifiers}")
-        pass
-
-    def on_key_release(self, symbol, modifiers):
-        # print(f"Key released: {hex(symbol)} ({chr(symbol)}), modifiers: {modifiers}")
-        pass
-
-    def on_draw(self):
-        self.clear()
-        self.label.draw()
-
-    def custom_function(self):
-        # self explanatory
-        pass
 
 
 def main():
     window = pyglet_window(480, 360, "pyglet window", resizable=True)
+    pyglet.gl.glClearColor(0xc1 / 0xff, 0xd7 / 0xff, 0xee / 0xff, 1)
 
-    window.custom_function()
+    label = pyglet.text.Label(text="Hello World!",
+                              color=(0x00, 0x00, 0x00, 0xFF),
+                              font_name="Courier",
+                              font_size=36,
+                              x=window.width // 2, y=window.height // 2,
+                              anchor_x="center", anchor_y="center")
+
+    @window.event
+    def on_draw():
+        window.clear()
+        label.draw()
 
     pyglet.app.run()
 
