@@ -1,9 +1,7 @@
-import sys
-import math
-import pygame
-from pygame.locals import *
+# import math
+import pyglet
 
-
+"""
 class game:
     def __init__(self):
         self.tick = 0
@@ -18,9 +16,6 @@ class game:
         self.progress_bars_delay = 0
 
         self.progress_bars = []
-
-
-game = game()
 
 
 class progress_bar:
@@ -64,56 +59,53 @@ class progress_bar:
 
         if self.boost_ticks > 0:
             self.boost_ticks -= 1
+"""
 
 
-pygame.init()
+class pyglet_window(pyglet.window.Window):
+    def __init__(self, *args, **kwargs):
+        super(pyglet_window, self).__init__(*args, **kwargs)
+        pyglet_window.set_minimum_size(self, 480, 360)
+        pyglet_window.set_maximum_size(self, 1280, 720)
+        print(pyglet_window.get_location(self))
+        self.label = pyglet.text.Label("Hello World!")
 
-window_size = [480, 360]
-window = pygame.display.set_mode(window_size)  # once to-do fixed in line 88 add RESIZABLE
-clock = pygame.time.Clock()
-font = pygame.font.SysFont("Arial", 16)
+    def on_resize(self, width, height):
+        # print(f"window resized: {width}, {height}")
+        pass
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        # print(f"Mouse pressed: at: {x, y}, button: {button}, modifiers: {modifiers}")
+        pass
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        # print(f"Mouse moved: to: {x, y}, speed: {dx, dy}")
+        pass
+
+    def on_key_press(self, symbol, modifiers):
+        # print(f"Key pressed: {hex(symbol)} ({chr(symbol)}), modifiers: {modifiers}")
+        pass
+
+    def on_key_release(self, symbol, modifiers):
+        # print(f"Key released: {hex(symbol)} ({chr(symbol)}), modifiers: {modifiers}")
+        pass
+
+    def on_draw(self):
+        self.clear()
+        self.label.draw()
+
+    def custom_function(self):
+        # self explanatory
+        pass
 
 
-def update_fps(fps):
-    text_color = "green" if fps > 30 else "yellow" if fps > 10 else "red"
-    fps_text = font.render(str(fps), 1, pygame.Color(text_color))
-    return fps_text
+def main():
+    window = pyglet_window(480, 360, "pyglet window", resizable=True)
 
-# print(pygame.display.get_wm_info())
+    window.custom_function()
 
-while 1:
-    events = pygame.event.get()
-    current_fps = round(float(clock.get_fps()), 2)
-    for event in events:
-        if event.type == VIDEORESIZE:
-            pass
-        """
-            window_size = event.size
-            pygame.display.set_mode(window_size, RESIZABLE, 32)
-            print(window_size)
-        """
-        # TODO: fix window having height incremented when resizing window
-        # idea: get window position and cursor position to calculate size
-        if event.type == QUIT:
-            print("exit: QUIT event type")
-            sys.exit(0)
+    pyglet.app.run()
 
-    window.fill((0xc1, 0xd7, 0xee))
 
-    if current_fps:
-        # print(f"fps: {fps}")
-        window.blit(update_fps(current_fps), (0, 0))
-
-        if game.progress_bars_delay > 0:
-            game.progress_bars_delay -= 1
-
-        if len(game.progress_bars) < game.progress_bars_limit and not game.progress_bars_delay:
-            game.progress_bars.append(progress_bar())
-            game.progress_bars_delay += round(game.progress_bars_new_delay)
-
-        for bar in game.progress_bars:
-            bar.tick()
-            # print(f"row: {bar.ROW}, {bar.progress}/1.000, resources: {bar.resources}, experience: {bar.experience}/{bar.experience_limit}, level: {bar.level}, boost: {bar.boost_ticks}, speed = {bar.progress_multi_from_level}")
-
-    clock.tick(60)
-    pygame.display.update()
+if __name__ == "__main__":
+    main()
